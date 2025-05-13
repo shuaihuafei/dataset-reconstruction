@@ -43,7 +43,7 @@ class GaussianRotate(A.Rotate):
         angle = max(min(angle, 15.0), -15.0)
         return {"angle": angle}
     
-def calculate_position_offset(
+def calculatePositionOffset(
     background_img_shape: Tuple[int, int],
     embedded_img_shape: Tuple[int, int],
     y_ratio: float,
@@ -70,7 +70,7 @@ def calculate_position_offset(
 
     return y_offset, x_offset
 
-def calculate_dynamic_scale_limit(y_ratio: float, y_range: Tuple[float, float]) -> Tuple[float, float]:
+def calculateDynamicScaleLimit(y_ratio: float, y_range: Tuple[float, float]) -> Tuple[float, float]:
     left_ratio, right_ratio = y_range
 
     left_limit_base = Config.LEFT_LIMIT_BASE
@@ -258,7 +258,7 @@ def main():
                 continue
 
             y_ratio = random.uniform(*config.Y_RATIO_RANGE)
-            scale_limit = calculate_dynamic_scale_limit(y_ratio, config.Y_RATIO_RANGE)
+            scale_limit = calculateDynamicScaleLimit(y_ratio, config.Y_RATIO_RANGE)
             
             augmentation_pipeline = A.Compose(
                 [
@@ -277,7 +277,7 @@ def main():
             augmented_bboxes = augmented_data['bboxes']
             augmented_mask = augmented_data['mask']
 
-            y_offset, x_offset = calculate_position_offset(
+            y_offset, x_offset = calculatePositionOffset(
                 background_img.shape, augmented_img.shape, y_ratio, bbox_y_max, last_x_offset_set
             )
             y_end = min(y_offset + augmented_img.shape[0], background_img.shape[0])
